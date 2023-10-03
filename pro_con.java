@@ -19,7 +19,8 @@ class buffer{
         // common object of any class can call wait which is synchronized...
         // access control can be archive through sunchronized...
 
-        if(flag == 1){
+        //if is used when only one producer consumer problem, when multiple then we have to used while...
+        while(flag == 1){
             try{
                 wait(); // it is called when it is in sychronize method otherwise throw exception...
                 // it is also called interrupt...
@@ -32,13 +33,16 @@ class buffer{
         info = n;
         System.out.println("Produce::"+id);
         System.out.println(info);
-        notify(); // it is notify to other thread which is in Block state or who wait() 
+        // if we used only one producer consumer problem then we have to write notify()...
+        notifyAll(); 
+        // it is notify to other thread which is in Block state or who wait() 
         // first for wakeup...
         // wait will reamaining when notify() not called...
         //else should be not there, cause it will never execute after schedule...
     }
     synchronized void get(int id){
-        if(flag == 0){
+        //if is used when only one producer consumer problem, when multiple then we have to used while...
+        while(flag == 0){
             try{    
                 wait();
             }
@@ -49,7 +53,8 @@ class buffer{
         System.out.println("consume::"+id);
         System.out.println(info);
         flag = 0;
-        notify();
+        // if we used only one producer consumer problem then we have to write notify()...
+        notifyAll();
     }  
 }
 class producer extends Thread{
